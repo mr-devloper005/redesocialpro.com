@@ -147,6 +147,16 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
   const description = content.description || post.summary || "Details coming soon.";
   const descriptionHtml = !isArticle ? formatRichHtml(description, "Details coming soon.") : "";
   const articleHtml = isArticle ? formatArticleHtml(content, post) : "";
+  const imageBodyHtml =
+    task === "image"
+      ? formatRichHtml(
+          (typeof content.body === "string" && content.body.trim()) ||
+            (typeof content.description === "string" && content.description.trim()) ||
+            post.summary ||
+            "",
+          "Details coming soon."
+        )
+      : "";
   const articleSummary =
     post.summary ||
     (typeof content.excerpt === "string" ? content.excerpt : "") ||
@@ -229,21 +239,17 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
 
   if (productKind === "directory" && (task === "listing" || task === "classified" || task === "profile")) {
     return (
-      <div className="min-h-screen bg-[#f8fbff]">
-        <NavbarShell />
-        <DirectoryTaskDetailPage
-          task={task}
-          taskLabel={taskConfig?.label || task}
-          taskRoute={taskConfig?.route || "/"}
-          post={post}
-          description={description}
-          category={category}
-          images={images}
-          mapEmbedUrl={mapEmbedUrl}
-          related={related}
-        />
-        <Footer />
-      </div>
+      <DirectoryTaskDetailPage
+        task={task}
+        taskLabel={taskConfig?.label || task}
+        taskRoute={taskConfig?.route || "/"}
+        post={post}
+        description={description}
+        category={category}
+        images={images}
+        mapEmbedUrl={mapEmbedUrl}
+        related={related}
+      />
     );
   }
 
@@ -256,7 +262,8 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
           href={taskConfig?.route || "/"}
           className="mb-6 inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
         >
-          ← Back to {taskConfig?.label || "posts"}
+          {"Back to "}
+          {taskConfig?.label || "posts"}
         </Link>
 
         <div
@@ -310,28 +317,150 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
 
             {!isArticle ? (
               <>
-                {!isBookmark ? (
+                {task === "image" ? (
+                  <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
+                    <div className="space-y-6">
+                      <div className="overflow-hidden rounded-[2rem] border border-border bg-card p-4">
+                        <div className="grid gap-4 sm:grid-cols-2">
+                          {images.map((image, index) => (
+                            <div key={index} className="relative aspect-[4/5] overflow-hidden rounded-xl">
+                              <ContentImage
+                                src={image}
+                                alt={`${post.title} image ${index + 1}`}
+                                fill
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 40vw"
+                                quality={75}
+                                className="object-cover transition-transform duration-300 hover:scale-105"
+                                intrinsicWidth={960}
+                                intrinsicHeight={1200}
+                                priority={index === 0}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="rounded-[2rem] border border-border/70 bg-card p-6 sm:p-8">
+                        <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+                          <Badge variant="secondary" className="inline-flex items-center gap-1">
+                            <Tag className="h-3.5 w-3.5" />
+                            {category}
+                          </Badge>
+                          {location ? (
+                            <span className="inline-flex items-center gap-1">
+                              <MapPin className="h-4 w-4" />
+                              {location}
+                            </span>
+                          ) : null}
+                        </div>
+                        <h1 className="mt-4 text-3xl font-semibold tracking-[-0.03em] text-foreground sm:text-4xl">{post.title}</h1>
+                        <RichContent html={imageBodyHtml} className="mt-5 max-w-none leading-8" />
+                      </div>
+                    </div>
+
+                    <aside className="space-y-5 lg:sticky lg:top-24">
+                      <div className="rounded-[2rem] border border-border/70 bg-card p-6">
+                        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">Image details</p>
+                        <div className="mt-4 space-y-4 text-sm text-muted-foreground">
+                          <div>
+                            <p className="font-medium text-foreground">Collection</p>
+                            <p className="mt-1">{category}</p>
+                          </div>
+                          
+                          <div>
+                            <p className="font-medium text-foreground">Author</p>
+                            <p className="mt-1">{post.authorName || content.email?.split('@')[0] || 'Anonymous'}</p>
+                          </div>
+                          
+                          
+                          {postTags.length > 0 && (
+                            <div>
+                              <p className="font-medium text-foreground">Tags</p>
+                              <div className="mt-2 flex flex-wrap gap-1.5">
+                                {postTags.map((tag) => (
+                                  <span key={tag} className="inline-flex items-center rounded-full bg-muted px-2.5 py-1 text-xs font-medium">
+                                    #{tag}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                          
+                          <div>
+                            <p className="font-medium text-foreground">Images</p>
+                            <p className="mt-1">{images.length} {images.length === 1 ? 'image' : 'images'}</p>
+                          </div>
+                          
+                          {location && (
+                            <div>
+                              <p className="font-medium text-foreground">Location</p>
+                              <p className="mt-1">{location}</p>
+                            </div>
+                          )}
+                          
+                          {content.email ? (
+                            <div>
+                              <p className="font-medium text-foreground">Contact</p>
+                              <a href={`mailto:${content.email}`} className="mt-1 inline-flex break-all text-primary hover:underline">
+                                {content.email}
+                              </a>
+                            </div>
+                          ) : null}
+                          
+                          {content.website ? (
+                            <div>
+                              <p className="font-medium text-foreground">Source</p>
+                              <a href={content.website} target="_blank" rel="noreferrer" className="mt-1 inline-flex break-all text-primary hover:underline">
+                                {content.website}
+                              </a>
+                            </div>
+                          ) : null}
+                          
+                          {post.summary && (
+                            <div>
+                              <p className="font-medium text-foreground">Summary</p>
+                              <p className="mt-1 line-clamp-3">{post.summary}</p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      
+                      {content.highlights?.length ? (
+                        <div className="rounded-[2rem] border border-border/70 bg-card p-6">
+                          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">Highlights</p>
+                          <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+                            {content.highlights.map((item) => (
+                              <li key={item}>- {item}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      ) : null}
+                      
+                                          </aside>
+                  </div>
+                ) : !isBookmark ? (
                   <div className={cn(isClassified ? "w-full" : "")}>
                     <TaskImageCarousel images={images} />
                   </div>
                 ) : null}
 
-                <div className={cn(isClassified ? "mx-auto w-full max-w-4xl" : "mt-6")}>
-                  <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-                    <Badge variant="secondary" className="inline-flex items-center gap-1">
-                      <Tag className="h-3.5 w-3.5" />
-                      {category}
-                    </Badge>
-                    {location && (
-                      <span className="inline-flex items-center gap-1">
-                        <MapPin className="h-4 w-4" />
-                        {location}
-                      </span>
-                    )}
+                {task !== "image" ? (
+                  <div className={cn(isClassified ? "mx-auto w-full max-w-4xl" : "mt-6")}>
+                    <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+                      <Badge variant="secondary" className="inline-flex items-center gap-1">
+                        <Tag className="h-3.5 w-3.5" />
+                        {category}
+                      </Badge>
+                      {location && (
+                        <span className="inline-flex items-center gap-1">
+                          <MapPin className="h-4 w-4" />
+                          {location}
+                        </span>
+                      )}
+                    </div>
+                    <h1 className="mt-4 text-3xl font-semibold text-foreground">{post.title}</h1>
+                    <RichContent html={descriptionHtml} className="mt-3 max-w-3xl" />
                   </div>
-                  <h1 className="mt-4 text-3xl font-semibold text-foreground">{post.title}</h1>
-                  <RichContent html={descriptionHtml} className="mt-3 max-w-3xl" />
-                </div>
+                ) : null}
               </>
             ) : null}
 
@@ -379,12 +508,12 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
               </div>
             ) : null}
 
-            {content.highlights?.length && !isArticle ? (
+            {content.highlights?.length && !isArticle && task !== "image" ? (
               <div className={cn("mt-8 rounded-2xl border border-border bg-card p-6", isClassified ? "mx-auto w-full max-w-4xl" : "")}>
                 <h2 className="text-lg font-semibold text-foreground">Highlights</h2>
                 <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
                   {content.highlights.map((item) => (
-                    <li key={item}>• {item}</li>
+                    <li key={item}>- {item}</li>
                   ))}
                 </ul>
               </div>
@@ -403,13 +532,12 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
                 </div>
               </div>
             ) : null}
-
           </div>
 
           {!hideSidebar ? (
             <aside className="space-y-6">
-            <div className="rounded-2xl border border-border bg-card p-6">
-              <h2 className="text-lg font-semibold text-foreground">Listing details</h2>
+              <div className="rounded-2xl border border-border bg-card p-6">
+                <h2 className="text-lg font-semibold text-foreground">Listing details</h2>
                 <div className="mt-4 space-y-3 text-sm text-muted-foreground">
                   {content.website && (
                     <div className="flex items-start gap-2">
@@ -448,58 +576,58 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
                     </div>
                   )}
                 </div>
-              {content.website ? (
-                <Button className="mt-5 w-full" asChild>
-                  <a href={content.website} target="_blank" rel="noreferrer">
-                    Visit Website
-                  </a>
-                </Button>
-              ) : null}
-            </div>
-
-            {mapEmbedUrl ? (
-              <div className="rounded-2xl border border-border bg-card p-4">
-                <p className="text-sm font-semibold text-foreground">Location map</p>
-                <div className="mt-4 overflow-hidden rounded-xl border border-border">
-                  <iframe
-                    title="Business location map"
-                    src={mapEmbedUrl}
-                    className="h-56 w-full"
-                    loading="lazy"
-                  />
-                </div>
+                {content.website ? (
+                  <Button className="mt-5 w-full" asChild>
+                    <a href={content.website} target="_blank" rel="noreferrer">
+                      Visit Website
+                    </a>
+                  </Button>
+                ) : null}
               </div>
-            ) : null}
 
-          </aside>
+              {mapEmbedUrl ? (
+                <div className="rounded-2xl border border-border bg-card p-4">
+                  <p className="text-sm font-semibold text-foreground">Location map</p>
+                  <div className="mt-4 overflow-hidden rounded-xl border border-border">
+                    <iframe
+                      title="Business location map"
+                      src={mapEmbedUrl}
+                      className="h-56 w-full"
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
+              ) : null}
+            </aside>
           ) : null}
         </div>
 
         <section className="mt-12">
           {related.length ? (
             <>
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-foreground">
-                More in {category}
-              </h2>
-              {taskConfig?.route && (
-                <Link
-                  href={taskConfig.route}
-                  className="text-sm text-muted-foreground hover:text-foreground"
-                >
-                  View all
-                </Link>
-              )}
-            </div>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {related.map((item) => (
-                <TaskPostCard
-                  key={item.id}
-                  post={item}
-                  href={buildPostUrl(task, item.slug)}
-                />
-              ))}
-            </div>
+              <div className="mb-4 flex items-center justify-between">
+                <h2 className="text-xl font-semibold text-foreground">
+                  More in {category}
+                </h2>
+                {taskConfig?.route && (
+                  <Link
+                    href={taskConfig.route}
+                    className="text-sm text-muted-foreground hover:text-foreground"
+                  >
+                    View all
+                  </Link>
+                )}
+              </div>
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {related.map((item) => (
+                  <TaskPostCard
+                    key={item.id}
+                    post={item}
+                    href={buildPostUrl(task, item.slug)}
+                    taskKey={task}
+                  />
+                ))}
+              </div>
             </>
           ) : null}
           <nav className="mt-6 rounded-2xl border border-border bg-card/60 p-4">

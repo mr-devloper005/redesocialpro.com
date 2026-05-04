@@ -51,6 +51,7 @@ export default function ContactPage() {
   const { recipe } = getFactoryState()
   const productKind = getProductKind(recipe)
   const tone = getTone(productKind)
+  const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || `hello@${SITE_CONFIG.domain}`
   const lanes =
     productKind === 'directory'
       ? [
@@ -98,6 +99,16 @@ export default function ContactPage() {
 
           <div className={`rounded-[2rem] p-7 ${tone.panel}`}>
             <h2 className="text-2xl font-semibold">Send a message</h2>
+            <p className={`mt-2 text-sm leading-7 ${tone.muted}`}>Prefer email? Use the button below and manage the address through `NEXT_PUBLIC_CONTACT_EMAIL` in your environment file.</p>
+            <div className="mt-5">
+              <a
+                href={`mailto:${contactEmail}`}
+                className={`inline-flex h-12 items-center justify-center rounded-full px-6 text-sm font-semibold ${tone.action}`}
+              >
+                <Mail className="mr-2 h-4 w-4" />
+                Email {contactEmail}
+              </a>
+            </div>
             <form className="mt-6 grid gap-4">
               <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="Your name" />
               <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="Email address" />
