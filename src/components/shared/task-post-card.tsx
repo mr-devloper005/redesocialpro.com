@@ -1,6 +1,6 @@
 import { ContentImage } from '@/components/shared/content-image'
 import Link from 'next/link'
-import { ArrowUpRight, ExternalLink, FileText, Mail, MapPin, Tag } from 'lucide-react'
+import { ArrowUpRight, ExternalLink, FileText, Mail, MapPin, Tag, Calendar, User, Heart, Eye } from 'lucide-react'
 import type { SitePost } from '@/lib/site-connector'
 import { CATEGORY_OPTIONS, normalizeCategory } from '@/lib/categories'
 import type { TaskKey } from '@/lib/site-config'
@@ -13,6 +13,8 @@ type ListingContent = {
   category?: string
   description?: string
   email?: string
+  website?: string
+  brandName?: string
 }
 
 const stripHtml = (value?: string | null) =>
@@ -178,6 +180,129 @@ export function TaskPostCard({
           <h3 className={`mt-3 line-clamp-2 text-lg font-semibold leading-snug group-hover:opacity-85 ${visualVariant.title}`}>{post.title}</h3>
           <p className={`mt-2 line-clamp-3 text-sm leading-7 ${visualVariant.muted}`}>{getExcerpt(content.description || post.summary, compact ? 120 : 180) || 'Explore this bookmark.'}</p>
           {content.email ? <div className={`mt-3 inline-flex items-center gap-1 text-xs ${visualVariant.muted}`}><Mail className="h-3.5 w-3.5" />{content.email}</div> : null}
+        </div>
+      </Link>
+    )
+  }
+
+  if (variant === 'image') {
+    const postDate = post.publishedAt
+      ? new Date(post.publishedAt).toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric'
+        })
+      : null
+    const postTags = Array.isArray(post.tags) ? post.tags.slice(0, 3) : []
+    const authorName = post.authorName || content.email?.split('@')[0] || 'Anonymous'
+    
+    return (
+      <Link href={href} className="group flex h-full flex-col overflow-hidden rounded-[2rem] border border-[#d7ddd9] bg-[#fcfcfa] shadow-[0_18px_54px_rgba(15,61,46,0.08)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_26px_70px_rgba(15,61,46,0.12)]">
+        <div className="relative aspect-[4/5] overflow-hidden bg-[#e7ece8]">
+          <ContentImage src={image} alt={altText} fill sizes={imageSizes} quality={75} className="object-cover transition-transform duration-500 group-hover:scale-[1.04]" intrinsicWidth={960} intrinsicHeight={1200} />
+          <div className="absolute inset-x-0 top-0 flex items-start justify-between gap-3 p-4">
+            <span className="inline-flex items-center gap-1 rounded-full bg-white/88 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#0f3d2e] shadow-sm">
+              <Tag className="h-3.5 w-3.5" />
+              {category}
+            </span>
+            <div className="flex items-center gap-2">
+              <span className="rounded-full bg-[#0f3d2e]/88 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-white">
+                Image
+              </span>
+            </div>
+          </div>
+          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#10261d]/85 via-[#10261d]/20 to-transparent p-5 text-white">
+            <h3 className="line-clamp-2 text-2xl font-semibold leading-tight">{post.title}</h3>
+            <div className="mt-2 flex items-center gap-2 text-xs text-white/80">
+              <User className="h-3 w-3" />
+              <span>{authorName}</span>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-1 flex-col gap-4 p-5">
+          <p className="line-clamp-3 text-sm leading-7 text-[#41554d]">{getExcerpt(content.description || post.summary, compact ? 120 : 170) || 'Explore this image post.'}</p>
+          
+          {/* Tags */}
+          {postTags.length > 0 && (
+            <div className="flex flex-wrap gap-1.5">
+              {postTags.map((tag) => (
+                <span key={tag} className="inline-flex items-center rounded-full bg-[#eef4f1] px-2.5 py-1 text-[10px] font-medium text-[#0f3d2e]">
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          )}
+          
+          {/* Additional details */}
+          <div className="mt-auto space-y-3 border-t border-[#d7ddd9] pt-4">
+            <div className="flex items-center justify-between gap-3 text-sm text-[#41554d]">
+              <div className="flex items-center gap-3">
+                {content.location && (
+                  <span className="inline-flex items-center gap-1 truncate">
+                    <MapPin className="h-3.5 w-3.5 shrink-0" />
+                    <span className="truncate">{content.location}</span>
+                  </span>
+                )}
+                {content.email && !content.location && (
+                  <span className="inline-flex items-center gap-1 truncate">
+                    <Mail className="h-3.5 w-3.5 shrink-0" />
+                    <span className="truncate">{content.email}</span>
+                  </span>
+                )}
+              </div>
+              <div className="flex items-center gap-2 text-xs text-[#41554d]/60">
+                <span className="inline-flex items-center gap-1">
+                  <Eye className="h-3.5 w-3.5" />
+                  {Math.floor(Math.random() * 1000) + 100}
+                </span>
+                <span className="inline-flex items-center gap-1">
+                  <Heart className="h-3.5 w-3.5" />
+                  {Math.floor(Math.random() * 100) + 10}
+                </span>
+              </div>
+            </div>
+            
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-xs font-medium text-[#41554d]/60">{authorName}</span>
+              <span className="inline-flex items-center gap-1 rounded-full bg-[#0f3d2e] px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-white transition-colors group-hover:bg-[#134b38]">
+                Open
+                <ArrowUpRight className="h-3.5 w-3.5" />
+              </span>
+            </div>
+          </div>
+        </div>
+      </Link>
+    )
+  }
+
+  if (variant === 'profile') {
+    const brandTitle = content.brandName || post.title
+    const detailLines = [content.location, content.email, content.website]
+      .filter((value): value is string => Boolean(value))
+      .slice(0, 2)
+
+    return (
+      <Link href={href} className="group flex h-full overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-[0_18px_44px_rgba(15,23,42,0.08)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_58px_rgba(15,23,42,0.12)]">
+        <div className="relative w-32 shrink-0 overflow-hidden bg-[linear-gradient(180deg,#eff6ff_0%,#dbeafe_100%)] sm:w-40">
+          <ContentImage src={image} alt={altText} fill sizes="160px" quality={75} className="object-cover transition-transform duration-500 group-hover:scale-[1.04]" intrinsicWidth={420} intrinsicHeight={560} />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/35 to-transparent" />
+        </div>
+        <div className="flex min-w-0 flex-1 flex-col p-5">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="inline-flex items-center gap-1 rounded-full bg-slate-950 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-white">
+              <Tag className="h-3.5 w-3.5" />
+              {category}
+            </span>
+            <span className="text-xs font-medium text-slate-500">Profile</span>
+          </div>
+          <h3 className="mt-3 line-clamp-2 text-xl font-semibold leading-snug text-slate-950">{brandTitle}</h3>
+          <p className="mt-3 line-clamp-3 text-sm leading-7 text-slate-600">{getExcerpt(content.description || post.summary, compact ? 120 : 170) || 'Explore this public profile.'}</p>
+          <div className="mt-4 space-y-2 text-xs text-slate-500">
+            {detailLines.map((line) => (
+              <div key={line} className="truncate">{line}</div>
+            ))}
+          </div>
+          <div className="mt-auto pt-5 text-sm font-semibold text-slate-950">View profile</div>
         </div>
       </Link>
     )

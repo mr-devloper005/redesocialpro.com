@@ -12,6 +12,7 @@ export type TaskKey =
   | 'org'
   | 'sbm'
   | 'comment'
+  | 'logos'
 
 export type TaskConfig = {
   key: TaskKey

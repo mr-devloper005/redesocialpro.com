@@ -182,30 +182,18 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
         ) : null}
 
         {layoutKey === 'image-masonry' || layoutKey === 'image-portfolio' ? (
-          <section className="mb-12 rounded-[2rem] border border-[#e5e7eb] bg-[#f7f7f7] p-4 shadow-[0_18px_56px_rgba(15,61,46,0.08)] sm:p-6 lg:p-8">
-            <div className="grid gap-6 lg:grid-cols-[1.12fr_0.88fr] lg:items-center">
-              <div className="relative min-h-[320px] overflow-hidden rounded-[1.2rem] bg-[#dfe7e3] sm:min-h-[400px] lg:min-h-[470px]">
-                {posts[0] ? (
-                  <ContentImage
-                    src={(Array.isArray(posts[0].media) && posts[0].media[0]?.url) || '/placeholder.svg?height=1200&width=900'}
-                    alt={posts[0].title}
-                    fill
-                    className="object-cover"
-                  />
-                ) : null}
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0f3d2e]/28 to-transparent" />
-              </div>
-
-              <div className="rounded-[1.2rem] border border-[#d7ddd9] bg-white p-6 shadow-[0_10px_34px_rgba(15,61,46,0.09)] sm:p-8">
+          <section className="mb-12 rounded-[2.2rem] border border-[#d8dfdb] bg-[#f5f4ef] p-4 shadow-[0_24px_64px_rgba(15,61,46,0.08)] sm:p-6 lg:p-8">
+            <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch">
+              <div className="rounded-[1.4rem] border border-[#d7ddd9] bg-white p-6 shadow-[0_10px_30px_rgba(15,61,46,0.06)]">
                 <div className="inline-flex items-center gap-2 rounded-full bg-[#eef4f1] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#0f3d2e]">
-                  <Icon className="h-3.5 w-3.5" /> Image sharing
+                  <Icon className="h-3.5 w-3.5" /> Visual outline
                 </div>
                 <h1 className="mt-4 text-3xl font-semibold tracking-[-0.03em] text-[#1a1a1a] sm:text-4xl">{taskConfig?.label || 'Images'}</h1>
                 <p className="mt-4 text-sm leading-7 text-[#1a1a1a]/75 sm:text-base">
-                  {taskConfig?.description || 'Browse the newest image posts with a clean, gallery-first layout designed for visual discovery.'}
+                  {taskConfig?.description || 'Browse the newest image posts with a cleaner gallery flow, stronger hierarchy, and more intentional cards.'}
                 </p>
-                <form className="mt-6 flex flex-col gap-3 sm:flex-row" action={taskConfig?.route || '#'}>
-                  <select name="category" defaultValue={normalizedCategory} className="h-11 flex-1 rounded-xl border border-[#d7ddd9] bg-white px-3 text-sm text-[#1a1a1a]">
+                <form className="mt-6 flex flex-col gap-3" action={taskConfig?.route || '#'}>
+                  <select name="category" defaultValue={normalizedCategory} className="h-11 rounded-xl border border-[#d7ddd9] bg-white px-3 text-sm text-[#1a1a1a]">
                     <option value="all">All categories</option>
                     {CATEGORY_OPTIONS.map((item) => (
                       <option key={item.slug} value={item.slug}>{item.name}</option>
@@ -215,22 +203,58 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
                     Apply
                   </button>
                 </form>
+                <div className="mt-6 space-y-3 border-t border-[#e7ebe8] pt-6">
+                  {['Gallery-first browsing', 'Cleaner detail rhythm', 'Stronger visual cards'].map((item) => (
+                    <div key={item} className="rounded-xl border border-[#e7ebe8] bg-[#fafaf7] px-4 py-3 text-sm text-[#41554d]">
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid gap-4 lg:grid-rows-[minmax(380px,1fr)_auto]">
+                <div className="relative min-h-[320px] overflow-hidden rounded-[1.4rem] bg-[#dfe7e3] sm:min-h-[420px] lg:min-h-[470px]">
+                  {posts[0] ? (
+                    <ContentImage
+                      src={(Array.isArray(posts[0].media) && posts[0].media[0]?.url) || '/placeholder.svg?height=1200&width=900'}
+                      alt={posts[0].title}
+                      fill
+                      className="object-cover"
+                    />
+                  ) : null}
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0f3d2e]/52 via-[#0f3d2e]/12 to-transparent" />
+                  {posts[0] ? (
+                    <div className="absolute inset-x-0 bottom-0 p-6 text-white sm:p-8">
+                      <p className="text-xs font-semibold uppercase tracking-[0.26em] text-white/80">Featured image</p>
+                      <h2 className="mt-3 max-w-xl text-3xl font-semibold tracking-[-0.03em] sm:text-4xl">{posts[0].title}</h2>
+                      <p className="mt-3 max-w-lg text-sm leading-7 text-white/78">{posts[0].summary || 'A highlighted image post from the latest feed.'}</p>
+                    </div>
+                  ) : null}
+                </div>
+
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="rounded-[1.2rem] border border-[#d7ddd9] bg-white p-5 shadow-[0_10px_24px_rgba(15,61,46,0.05)]">
+                    <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#41554d]">Browse mode</p>
+                    <p className="mt-3 text-sm leading-7 text-[#41554d]">Cards now carry the essential context without competing with the image itself.</p>
+                  </div>
+                  <div className="rounded-[1.2rem] border border-[#d7ddd9] bg-[#eef4f1] p-5 shadow-[0_10px_24px_rgba(15,61,46,0.04)]">
+                    <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#0f3d2e]">Reading cue</p>
+                    <p className="mt-3 text-sm leading-7 text-[#315246]">The page now feels more like an intentional visual collection than a generic task feed.</p>
+                  </div>
+                </div>
               </div>
             </div>
           </section>
         ) : null}
 
         {layoutKey === 'profile-creator' || layoutKey === 'profile-business' ? (
-          <section className={`mb-12 rounded-[2.2rem] p-8 shadow-[0_24px_70px_rgba(92,79,74,0.08)] ${ui.panel}`}>
-            <div className="grid gap-6 lg:grid-cols-[0.78fr_1.22fr] lg:items-center">
-              <div className={`min-h-[240px] rounded-[2rem] ${ui.soft}`} />
-              <div>
-                <p className={`text-xs font-semibold uppercase tracking-[0.28em] ${ui.muted}`}>{taskConfig?.label || task}</p>
-                <h1 className="mt-3 font-[family-name:var(--font-display)] text-4xl font-semibold tracking-[-0.04em] text-foreground">Public profiles for people behind the imagery.</h1>
-                <p className={`mt-5 max-w-2xl text-sm leading-relaxed ${ui.muted}`}>
-                  Identity, credits, and contact paths stay readable here—separate from the masonry gallery so both surfaces keep their own rhythm.
-                </p>
-              </div>
+          <section className={`mb-12 w-full p-8 ${ui.panel}`}>
+            <div className="w-full text-center">
+              <p className={`text-xs font-semibold uppercase tracking-[0.28em] ${ui.muted}`}>{taskConfig?.label || task}</p>
+              <h1 className="mt-3 font-[family-name:var(--font-display)] text-4xl font-semibold tracking-[-0.04em] text-foreground">Public profiles for people behind the imagery.</h1>
+              <p className={`mt-5 text-sm leading-relaxed ${ui.muted} max-w-4xl mx-auto`}>
+                Identity, credits, and contact paths stay readable here—separate from the masonry gallery so both surfaces keep their own rhythm.
+              </p>
             </div>
           </section>
         ) : null}

@@ -2,9 +2,9 @@ import type { TaskKey } from '@/lib/site-config'
 
 export const siteContent = {
   navbar: {
-    tagline: 'Image sharing for people who care about craft',
+    tagline: '',
     searchCue: 'Search boards, creators, and visual posts',
-    emphasizedTaskKeys: ['image', 'profile'] as TaskKey[],
+    emphasizedTaskKeys: ['image'] as TaskKey[],
     moreLabel: 'More',
   },
   footer: {
@@ -235,7 +235,11 @@ export const taskPageMetadata: Record<Exclude<TaskKey, 'comment' | 'org' | 'soci
   },
   pdf: {
     title: 'Documents and downloads',
-    description: 'PDFs, decks, and files shared across the platform when you need something to take away.',
+    description: 'PDFs, decks, and files shared across platform when you need something to take away.',
+  },
+  logos: {
+    title: 'Professional Logo Showcase',
+    description: 'Browse and discover company logos, brand identities, and corporate trademarks from various industries and organizations.',
   },
 }
 
