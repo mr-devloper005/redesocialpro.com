@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import { TaskPostCard } from "@/components/shared/task-post-card";
+import { UniqueGalleryGrid } from "@/components/tasks/unique-gallery-grid";
 import { buildPostUrl } from "@/lib/task-data";
 import { normalizeCategory, isValidCategory } from "@/lib/categories";
 import type { TaskKey } from "@/lib/site-config";
@@ -60,8 +61,18 @@ export function TaskListClient({ task, initialPosts, category }: Props) {
     );
   }
 
+  // Use unique gallery layout for image tasks, standard grid for others
+  if (task === "image") {
+    return <UniqueGalleryGrid posts={merged} task={task} />;
+  }
+
+  const gridClassName =
+    task === "profile"
+      ? "grid gap-6 lg:grid-cols-2"
+      : "grid gap-6 sm:grid-cols-2 lg:grid-cols-4";
+
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <div className={gridClassName}>
       {merged.map((post) => {
         const localOnly = (post as any).localOnly;
         const href = localOnly

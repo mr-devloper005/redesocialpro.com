@@ -22,6 +22,7 @@ type PostContent = {
   phone?: string;
   email?: string;
   description?: string;
+  body?: string;
   highlights?: string[];
   logo?: string;
   images?: string[];
@@ -114,7 +115,7 @@ export default function LocalPostDetailPage() {
         <main className="mx-auto max-w-3xl px-4 py-20 text-center">
           <h1 className="text-2xl font-semibold text-foreground">Post not found</h1>
           <p className="mt-2 text-muted-foreground">
-            This local post isn’t available on this device.
+            This local post isn't available on this device.
           </p>
           <Button className="mt-6" asChild>
             <Link href="/">Back home</Link>
@@ -126,7 +127,11 @@ export default function LocalPostDetailPage() {
   }
 
   const category = content.category || post.tags?.[0] || taskConfig.label;
-  const description = content.description || post.summary || "Details coming soon.";
+  const description =
+    (typeof content.body === "string" && content.body.trim()) ||
+    content.description ||
+    post.summary ||
+    "Details coming soon.";
   const descriptionHtml = formatRichHtml(description, "Details coming soon.");
   const location = content.address || content.location;
   const images = getImageUrls(post, content);
@@ -142,7 +147,8 @@ export default function LocalPostDetailPage() {
           href={taskConfig.route}
           className="mb-6 inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
         >
-          ← Back to {taskConfig.label}
+          {"Back to "}
+          {taskConfig.label}
         </Link>
 
         {isArticle ? (
@@ -153,7 +159,7 @@ export default function LocalPostDetailPage() {
                 <ContentImage src={images[0]} alt={post.title} fill className="object-cover" intrinsicWidth={1600} intrinsicHeight={900} />
               </div>
             ) : null}
-            <RichContent html={formatRichHtml(description, "Details coming soon.")} />
+            <RichContent html={descriptionHtml} />
           </div>
         ) : isPdf ? (
           <div className="mx-auto w-full max-w-4xl">
@@ -246,7 +252,7 @@ export default function LocalPostDetailPage() {
                   <h2 className="text-base font-semibold text-foreground">Highlights</h2>
                   <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
                     {content.highlights.map((item) => (
-                      <li key={item}>• {item}</li>
+                      <li key={item}>- {item}</li>
                     ))}
                   </ul>
                 </div>
