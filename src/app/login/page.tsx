@@ -1,7 +1,11 @@
+'use client'
+
+import { useState } from 'react'
 import Link from 'next/link'
 import { Bookmark, Building2, FileText, Image as ImageIcon, Sparkles } from 'lucide-react'
 import { NavbarShell } from '@/components/shared/navbar-shell'
 import { Footer } from '@/components/shared/footer'
+import { useAuth } from '@/lib/auth-context'
 import { getFactoryState } from '@/design/factory/get-factory-state'
 import { getProductKind } from '@/design/factory/get-product-kind'
 import { LOGIN_PAGE_OVERRIDE_ENABLED, LoginPageOverride } from '@/overrides/login-page'
@@ -60,10 +64,31 @@ export default function LoginPage() {
     return <LoginPageOverride />
   }
 
+  const { login, isLoading } = useAuth()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+
   const { recipe } = getFactoryState()
   const productKind = getProductKind(recipe)
   const config = getLoginConfig(productKind)
   const Icon = config.icon
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError('')
+    
+    if (!email || !password) {
+      setError('Please enter both email and password')
+      return
+    }
+
+    try {
+      await login(email, password)
+    } catch (err) {
+      setError('Invalid email or password')
+    }
+  }
 
   return (
     <div className={`min-h-screen ${config.shell}`}>
@@ -83,10 +108,32 @@ export default function LoginPage() {
 
           <div className={`rounded-[2rem] p-8 ${config.panel}`}>
             <p className="text-xs font-semibold uppercase tracking-[0.24em] opacity-70">Welcome back</p>
-            <form className="mt-6 grid gap-4">
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="Email address" />
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="Password" type="password" />
-              <button type="submit" className={`inline-flex h-12 items-center justify-center rounded-full px-6 text-sm font-semibold ${config.action}`}>Sign in</button>
+            <form onSubmit={handleSubmit} className="mt-6 grid gap-4">
+              <input 
+                className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" 
+                placeholder="Email address" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <input 
+                className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" 
+                placeholder="Password" 
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              {error && (
+                <p className="text-sm text-red-500">{error}</p>
+              )}
+              <button 
+                type="submit" 
+                disabled={isLoading}
+                className={`inline-flex h-12 items-center justify-center rounded-full px-6 text-sm font-semibold ${config.action} ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
+              >
+                {isLoading ? 'Signing in...' : 'Sign in'}
+              </button>
             </form>
             <div className={`mt-6 flex items-center justify-between text-sm ${config.muted}`}>
               <Link href="/forgot-password" className="hover:underline">Forgot password?</Link>

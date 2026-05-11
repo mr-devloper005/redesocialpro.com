@@ -30,6 +30,7 @@ const taskIcons: Record<TaskKey, any> = {
   pdf: FileText,
   org: Building2,
   comment: FileText,
+  logos: LayoutGrid,
 }
 
 const variantClasses = {
@@ -260,30 +261,7 @@ export function Navbar() {
               })}
             </div>
 
-            {moreNav.length ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="hidden rounded-xl px-3 text-sm font-semibold text-[#dbe0ff] hover:bg-white/10 hover:text-white md:inline-flex">
-                    {siteContent.navbar.moreLabel}
-                    <ChevronDown className="ml-1 h-4 w-4 opacity-70" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="min-w-[200px] border-[rgba(92,79,74,0.12)] bg-[#faf8f6] text-[#111827]">
-                  {moreNav.map((task) => {
-                    const Icon = taskIcons[task.key] || LayoutGrid
-                    return (
-                      <DropdownMenuItem key={task.key} asChild className="cursor-pointer">
-                        <Link href={task.route} className="flex items-center gap-2">
-                          <Icon className="h-4 w-4" />
-                          {task.label}
-                        </Link>
-                      </DropdownMenuItem>
-                    )
-                  })}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : null}
-
+            
             {isAuthenticated ? (
               <NavbarAuthControls tone="contrast" />
             ) : (
@@ -314,7 +292,7 @@ export function Navbar() {
                 <Search className="h-4 w-4 text-[#8B5CF6]" />
                 {siteContent.navbar.searchCue}
               </Link>
-              {[...emphasizedNav, ...moreNav].map((task) => {
+              {emphasizedNav.map((task) => {
                 const Icon = taskIcons[task.key] || LayoutGrid
                 const isActive = pathname === task.route || pathname.startsWith(`${task.route}/`)
                 return (
