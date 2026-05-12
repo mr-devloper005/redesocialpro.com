@@ -8,22 +8,21 @@ export const siteContent = {
     moreLabel: 'More',
   },
   footer: {
-    tagline: 'Save inspiration, publish images, and grow your public profile',
+    tagline: 'Save inspiration, publish images, and showcase your creative vision',
   },
   hero: {
-    badge: 'Image sharing · Public profiles',
-    title: ['Your gallery and your public profile—', 'together in one premium surface.'],
+    title: ['Your gallery—', 'a premium surface for visual storytelling.'],
     description:
-      'Redesocial Pro is built for people who scroll images first: full-width frames, calm typography, and creator profiles that explain who made the work—without turning the site into a noisy feed.',
+      'Redesocial Pro is built for people who scroll images first: full-width frames, calm typography, and immersive galleries—without turning the site into a noisy feed.',
     primaryCta: {
       label: 'Open the gallery',
       href: '/images',
     },
     secondaryCta: {
-      label: 'Browse profiles',
-      href: '/profile',
+      label: 'Browse gallery',
+      href: '/images',
     },
-    searchPlaceholder: 'Search image posts, profiles, and tags across the site',
+    searchPlaceholder: 'Search image posts and tags across the site',
     /** Hero stat row — factual positioning for the product (not live metrics). */
     stats: [
       { kicker: 'Primary', line: 'Image posts & series' },
@@ -38,16 +37,16 @@ export const siteContent = {
   },
   home: {
     metadata: {
-      title: 'Redesocial Pro — image sharing and public profiles',
+      title: 'Redesocial Pro — image sharing and visual storytelling',
       description:
-        'Discover curated imagery, creator profiles, and visual stories on a premium, minimal gallery platform.',
-      openGraphTitle: 'Redesocial Pro — image sharing and public profiles',
+        'Discover curated imagery and visual stories on a premium, minimal gallery platform.',
+      openGraphTitle: 'Redesocial Pro — image sharing and visual storytelling',
       openGraphDescription:
-        'Browse image posts and public profiles with a gallery-first layout designed for viewers and creators.',
+        'Browse image posts with a gallery-first layout designed for viewers and creators.',
       keywords: [
         'image sharing',
         'photo gallery',
-        'creator profiles',
+        'visual storytelling',
         'visual discovery',
         'Redesocial Pro',
         'portfolio',
@@ -56,14 +55,14 @@ export const siteContent = {
     introBadge: 'How it works',
     introTitle: 'A quieter feed for people who live in images.',
     introParagraphs: [
-      'Redesocial Pro brings image posts and public profiles together so discovery feels continuous: scroll the gallery, land on a creator, and keep exploring related work.',
+      'Redesocial Pro is built for image-first discovery: scroll the gallery, explore visual stories, and find inspiration in every frame.',
       'The interface stays minimal on purpose—large imagery, soft surfaces, and typography that stays out of the way.',
-      'Every other task type remains available when you need it, but the experience stays tuned to viewers and visual publishing.',
+      'Every other task type remains available when you need it, but the experience stays tuned to visual publishing and creative work.',
     ],
     sideBadge: 'At a glance',
     sidePoints: [
       'Gallery-first homepage with masonry pacing and generous whitespace.',
-      'Profiles as the secondary lane for identity, credits, and follow-through.',
+      'Clean, focused layout that puts imagery at the center.',
       'Supporting sections stay reachable without crowding the main story.',
       'Lightweight motion and CSS-first polish for fast load on mobile and desktop.',
     ],
@@ -72,14 +71,14 @@ export const siteContent = {
       href: '/images',
     },
     secondaryLink: {
-      label: 'Meet creators',
-      href: '/profile',
+      label: 'Explore gallery',
+      href: '/images',
     },
     galleryFeature: {
       kicker: 'Made for viewers',
       title: 'Bring your favorite visuals into focus',
       subtitle:
-        'With Redesocial Pro, you can tune discovery around mood, palette, and subject—then save what resonates to your profile trail.',
+        'With Redesocial Pro, you can tune discovery around mood, palette, and subject—then save what resonates to your collection.',
       mockSearch: 'coastal minimal',
       mockFilters: ['Palette', 'Subject', 'Format'],
       popoverTitle: 'Tune by palette',
@@ -104,7 +103,7 @@ export const siteContent = {
         kicker: 'Why Redesocial Pro',
         title: 'A calm gallery surface for serious visual publishing.',
         subtitle:
-          'Redesocial Pro is built around image posts and public profiles: generous media, readable type, and navigation that gets out of the way. Articles, listings, classifieds, and saved boards stay on their usual routes whenever you need them.',
+          'Redesocial Pro is built around image posts: generous media, readable type, and navigation that gets out of the way. Articles, listings, classifieds, and saved boards stay on their usual routes whenever you need them.',
         cards: [
           {
             icon: 'image' as const,
@@ -112,14 +111,9 @@ export const siteContent = {
             body: 'Spotlight framing, a horizontal ribbon of live posts, and cards that respect aspect ratio—so portfolios, mood boards, and campaign stills feel intentional instead of squeezed into a generic feed.',
           },
           {
-            icon: 'user' as const,
-            title: 'Profiles that complete the story',
-            body: 'Every public profile carries bio, links, and context so viewers can move from a frame they love to the creator behind it in one clear step.',
-          },
-          {
             icon: 'search' as const,
             title: 'One search, whole site',
-            body: 'The hero search strip opens the same search experience you use elsewhere—posts, profiles, and tags—without a second mental model.',
+            body: 'The hero search strip opens the same search experience you use elsewhere—posts and tags—without a second mental model.',
           },
           {
             icon: 'sparkles' as const,
@@ -130,23 +124,23 @@ export const siteContent = {
       },
       steps: {
         kicker: 'How it works',
-        title: 'Publish imagery, refine your profile, stay easy to find',
+        title: 'Publish imagery, build your gallery, connect with viewers',
         items: [
           {
             title: 'Create image posts',
             body: 'Use the image gallery task to publish stills or series. Titles, summaries, and media render on listing and detail pages exactly as the platform already does today.',
           },
           {
-            title: 'Polish your public profile',
-            body: 'The profile task is your identity lane: credits, outbound links, and highlights so collaborators know who they are reaching after seeing your work.',
+            title: 'Organize your visual collection',
+            body: 'Build a cohesive gallery that showcases your style, whether it is portfolios, mood boards, or campaign stills.',
           },
           {
-            title: 'Help viewers search and follow through',
-            body: 'Visitors start from the hero or navbar search, open a post, then land on your profile when they want more—same URLs and flows across the site.',
+            title: 'Help viewers discover your work',
+            body: 'Visitors start from the hero or navbar search, open a post, and explore your visual stories—same URLs and flows across the site.',
           },
           {
             title: 'Keep other tools within reach',
-            body: 'Articles, listings, classifieds, and saved boards stay in the “More” menu and via direct links; they are not removed—just not the headline on this homepage.',
+            body: 'Articles, listings, classifieds, and saved boards stay in the "More" menu and via direct links; they are not removed—just not the headline on this homepage.',
           },
         ],
       },
@@ -184,24 +178,24 @@ export const siteContent = {
           'This strip pulls the same image-task posts as your /images gallery—real content from your workspace, ordered by what is newest when the homepage loads.',
       },
       closing: {
-        title: 'Open the gallery—or meet creators on profile first',
+        title: 'Open the gallery and start sharing your vision',
         subtitle:
-          'Accounts, tasks, and URLs are unchanged. This homepage is simply tuned for people who discover through imagery and follow through on public profiles.',
+          'A clean, image-first platform designed for photographers, artists, and visual storytellers to showcase their work.',
       },
     },
   },
   cta: {
     badge: 'Start publishing',
-    title: 'Share imagery and shape a public profile people remember.',
+    title: 'Share your imagery with the world.',
     description:
-      'Create an account to publish image posts, curate your profile surface, and keep every other task type one click away when you need it.',
+      'Create an account to publish image posts, build your gallery, and connect with fellow visual creators.',
     primaryCta: {
       label: 'Create account',
       href: '/register',
     },
     secondaryCta: {
-      label: 'Contact',
-      href: '/contact',
+      label: 'Browse gallery',
+      href: '/images',
     },
   },
   taskSectionHeading: 'Latest {label}',
@@ -257,7 +251,6 @@ export const taskIntroCopy: Record<
     links: [
       { label: 'Browse images', href: '/images' },
       { label: 'Open classifieds', href: '/classifieds' },
-      { label: 'View profiles', href: '/profile' },
     ],
   },
   article: {
@@ -269,7 +262,6 @@ export const taskIntroCopy: Record<
     ],
     links: [
       { label: 'Open images', href: '/images' },
-      { label: 'See profiles', href: '/profile' },
       { label: 'PDF library', href: '/pdf' },
     ],
   },
@@ -278,12 +270,10 @@ export const taskIntroCopy: Record<
     paragraphs: [
       'Classifieds handle gigs, rentals, gear, and quick offers that need fast scanning.',
       'They are visually quieter than the gallery so urgency reads clearly.',
-      'Pair classified browsing with profiles when you want to know who is behind a post.',
     ],
     links: [
       { label: 'Image gallery', href: '/images' },
       { label: 'Business listings', href: '/listings' },
-      { label: 'Profiles', href: '/profile' },
     ],
   },
   image: {
@@ -291,26 +281,13 @@ export const taskIntroCopy: Record<
     paragraphs: [
       'This is the primary surface for image-led posts: large media, soft corners, and a masonry rhythm tuned for viewers.',
       'Use it to publish portfolios, mood boards, campaign stills, or any story where the picture leads.',
-      'Profiles and articles stay one click away when someone wants more context.',
     ],
-    links: [
-      { label: 'Meet creators', href: '/profile' },
-      { label: 'Read articles', href: '/articles' },
-      { label: 'Saved resources', href: '/sbm' },
-    ],
+    links: [],
   },
   profile: {
-    title: 'Profiles that complete the picture',
-    paragraphs: [
-      'Profiles are the secondary emphasis: public identity pages for photographers, studios, and collaborators.',
-      'They anchor trust—bios, links, and highlights—without turning the whole site into a directory clone.',
-      'Browse profiles to understand who published the work you saved from the gallery.',
-    ],
-    links: [
-      { label: 'Browse images', href: '/images' },
-      { label: 'Open listings', href: '/listings' },
-      { label: 'Articles', href: '/articles' },
-    ],
+    title: '',
+    paragraphs: [],
+    links: [],
   },
   sbm: {
     title: 'Curated shelves for references',
@@ -335,7 +312,6 @@ export const taskIntroCopy: Record<
     links: [
       { label: 'Images', href: '/images' },
       { label: 'Articles', href: '/articles' },
-      { label: 'Profiles', href: '/profile' },
     ],
   },
   social: {
@@ -343,11 +319,10 @@ export const taskIntroCopy: Record<
     paragraphs: [
       'Short updates keep momentum between larger publishes.',
       'They are intentionally lightweight so the gallery remains the hero.',
-      'Use them as breadcrumbs back into imagery and profiles.',
+      'Use them as breadcrumbs back into imagery.',
     ],
     links: [
       { label: 'Gallery', href: '/images' },
-      { label: 'Profiles', href: '/profile' },
       { label: 'Articles', href: '/articles' },
     ],
   },
@@ -368,13 +343,25 @@ export const taskIntroCopy: Record<
     title: 'Teams and organizations',
     paragraphs: [
       'Organization pages group people, projects, and shared publishing under one structured identity.',
-      'They complement profiles when a whole studio needs a single surface.',
+      'Perfect for studios and teams that need a unified presence.',
       'Connect org pages to listings and imagery for a fuller story.',
     ],
     links: [
       { label: 'Listings', href: '/listings' },
       { label: 'Gallery', href: '/images' },
       { label: 'PDF library', href: '/pdf' },
+    ],
+  },
+  logos: {
+    title: 'Professional logo collection',
+    paragraphs: [
+      'Logos showcase brand identities and corporate trademarks in a clean, organized format.',
+      'Browse by industry, style, or company to find the perfect visual reference.',
+      'Use logos alongside other creative assets for comprehensive brand research.',
+    ],
+    links: [
+      { label: 'Gallery', href: '/images' },
+      { label: 'Articles', href: '/articles' },
     ],
   },
 }
