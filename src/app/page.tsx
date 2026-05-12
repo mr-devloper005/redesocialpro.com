@@ -245,27 +245,8 @@ function DirectoryHome({ primaryTask, enabledTasks, listingPosts, classifiedPost
             <ul className={`mt-6 space-y-3 text-sm leading-7 ${tone.muted}`}>
               <li>Search-first hero instead of a magazine headline.</li>
               <li>Action-oriented listing cards with trust metadata.</li>
-              <li>Support lanes for offers, businesses, and profiles.</li>
+              <li>Support lanes for offers and businesses.</li>
             </ul>
-          </div>
-          <div className="grid gap-4 md:grid-cols-2">
-            {(profilePosts.length ? profilePosts : classifiedPosts).slice(0, 4).map((post) => {
-              const meta = getPostMeta(post)
-              const taskValue = getPostTaskValue(post)
-              const taskKey = resolveTaskKey(taskValue, profilePosts.length ? 'profile' : 'classified')
-              return (
-                <Link key={post.id} href={getTaskHref(taskKey, post.slug)} className={`overflow-hidden rounded-[1.8rem] ${tone.panel}`}>
-                  <div className="relative h-44 overflow-hidden">
-                    <ContentImage src={getPostImage(post)} alt={post.title} fill className="object-cover" />
-                  </div>
-                  <div className="p-5">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.24em] opacity-70">{meta.category || (typeof taskValue === 'string' ? taskValue : '') || 'Profile'}</p>
-                    <h3 className="mt-2 text-xl font-semibold">{post.title}</h3>
-                    <p className={`mt-2 text-sm leading-7 ${tone.muted}`}>{post.summary || 'Quick access to local information and related surfaces.'}</p>
-                  </div>
-                </Link>
-              )
-            })}
           </div>
         </div>
       </section>
@@ -354,11 +335,9 @@ function VisualHome({ primaryTask, imagePosts, profilePosts, articlePosts }: { p
   const landing = siteContent.home.saasLanding
   const featureIcons = {
     image: ImageIcon,
-    user: User,
     search: Search,
     sparkles: Sparkles,
   } as const
-  const profileHref = SITE_CONFIG.tasks.find((task) => task.key === 'profile')?.route || '/profile'
 
   return (
     <main className="bg-[#f3efeb] text-[#201714]">
@@ -366,68 +345,22 @@ function VisualHome({ primaryTask, imagePosts, profilePosts, articlePosts }: { p
         <div className="mx-auto max-w-7xl px-4 pt-10 sm:px-6 lg:px-8 lg:pt-14">
           <div className="grid gap-10 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
             <div>
-              <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] text-[#d7d6d5]">
-                <ImageIcon className="h-3.5 w-3.5" />
-                {siteContent.hero.badge}
-              </span>
               <h1 className="mt-6 max-w-4xl text-4xl font-semibold tracking-[-0.05em] text-white sm:text-5xl lg:text-[3.45rem]">
                 {siteContent.hero.title[0]}
                 <br />
                 {siteContent.hero.title[1]}
               </h1>
               <p className="mt-5 max-w-2xl text-[15px] leading-7 text-[#d1d5db]">{siteContent.hero.description}</p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Link
-                  href={primaryTask?.route || siteContent.hero.primaryCta.href}
-                    className="inline-flex items-center gap-2 rounded-full bg-[linear-gradient(135deg,#b88555,#C9996B)] px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_34px_rgba(201,153,107,0.35)] transition hover:scale-[1.02] hover:brightness-110"
-                >
-                  {siteContent.hero.primaryCta.label}
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-                <Link
-                  href={siteContent.hero.secondaryCta.href}
-                  className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
-                >
-                  {siteContent.hero.secondaryCta.label}
-                </Link>
-              </div>
-              <div className="mt-8 grid gap-3 sm:grid-cols-3">
-                {siteContent.hero.stats.map((stat) => (
-                  <div key={stat.kicker} className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#9ca3af]">{stat.kicker}</p>
-                    <p className="mt-2 text-sm font-medium text-white">{stat.line}</p>
-                  </div>
-                ))}
-              </div>
             </div>
 
             <div className="rounded-[1.6rem] border border-white/10 bg-white/[0.04] p-4 shadow-[0_24px_70px_rgba(0,0,0,0.45)]">
               <div className="relative h-[360px] overflow-hidden rounded-[1.2rem] sm:h-[455px]">
                 <ContentImage src={getPostImage(heroVisual)} alt={heroVisual?.title || 'Featured visual'} fill className="object-cover" />
                 <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.02),rgba(0,0,0,0.55))]" />
-                <div className="absolute bottom-4 left-4 right-4 rounded-2xl border border-white/20 bg-black/50 p-4 backdrop-blur-sm">
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#d6d3d1]">{siteContent.hero.featureCardBadge}</p>
-                  <h2 className="mt-2 text-lg font-semibold text-white">{siteContent.hero.featureCardTitle}</h2>
-                  <p className="mt-2 text-sm leading-6 text-[#d1d5db]">{siteContent.hero.featureCardDescription}</p>
-                </div>
               </div>
             </div>
           </div>
 
-          <div className="relative z-10 mt-10">
-            <div className="mx-auto flex max-w-3xl flex-col gap-3 rounded-full border border-[#d9cec5] bg-[#f8f4f0] p-2 shadow-[0_18px_45px_rgba(0,0,0,0.22)] sm:flex-row sm:items-center">
-              <div className="flex flex-1 items-center gap-2 rounded-full px-4 py-2.5 text-sm text-[#5C4F4A]">
-                <Search className="h-4 w-4 text-[#5C766D]" />
-                {siteContent.hero.searchPlaceholder}
-              </div>
-              <Link
-                href={`/search?q=${encodeURIComponent(siteContent.home.saasLanding.galleryRibbon.title)}`}
-                className="inline-flex items-center justify-center rounded-full bg-[#5C766D] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#4f6660]"
-              >
-                {landing.heroSearchCta}
-              </Link>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -455,19 +388,6 @@ function VisualHome({ primaryTask, imagePosts, profilePosts, articlePosts }: { p
             </div>
           </section>
 
-          <section className="border-y border-[#eadfd6] bg-[#faf8f6] px-5 py-14 sm:px-8 lg:px-10 lg:py-16">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-[#5C766D]">{landing.steps.kicker}</p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-[#2c1e19] sm:text-[2.2rem]">{landing.steps.title}</h2>
-            <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-              {landing.steps.items.map((item, index) => (
-                <article key={item.title} className="rounded-[1.2rem] border border-[#e7ddd4] bg-[#fffdfa] p-5 shadow-[0_8px_20px_rgba(92,79,74,0.07)]">
-                  <p className="text-xl font-semibold tracking-[-0.03em] text-[#C9996B]">{String(index + 1).padStart(2, '0')}</p>
-                  <h3 className="mt-2 text-lg font-semibold text-[#2c1e19]">{item.title}</h3>
-                  <p className="mt-2 text-sm leading-7 text-[#5C4F4A]">{item.body}</p>
-                </article>
-              ))}
-            </div>
-          </section>
 
           <section className="bg-[linear-gradient(180deg,#130f0e_0%,#1c1714_100%)] px-5 py-14 sm:px-8 lg:px-10 lg:py-16">
             <div className="mx-auto max-w-5xl">
@@ -499,18 +419,6 @@ function VisualHome({ primaryTask, imagePosts, profilePosts, articlePosts }: { p
               <h2 className="text-3xl font-semibold tracking-[-0.03em] text-[#2c1e19] sm:text-[2rem]">{landing.closing.title}</h2>
               <p className="mt-4 text-sm leading-7 text-[#5C4F4A] sm:text-base">{landing.closing.subtitle}</p>
               <div className="mt-7 flex flex-wrap justify-center gap-3">
-                <Link
-                  href={(SITE_CONFIG.tasks.find((task) => task.key === 'image')?.route) || '/images'}
-                  className="inline-flex items-center rounded-full bg-[#5C766D] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#50675f]"
-                >
-                  Open images
-                </Link>
-                <Link
-                  href={profileHref}
-                  className="inline-flex items-center rounded-full border border-[#d6c6b8] bg-[#f8f4ef] px-5 py-2.5 text-sm font-semibold text-[#2c1e19] hover:bg-[#efe7de]"
-                >
-                  Meet creators
-                </Link>
               </div>
             </div>
           </section>
@@ -557,7 +465,6 @@ function VisualHome({ primaryTask, imagePosts, profilePosts, articlePosts }: { p
 function CurationHome({ primaryTask, bookmarkPosts, profilePosts, articlePosts }: { primaryTask?: EnabledTask; bookmarkPosts: SitePost[]; profilePosts: SitePost[]; articlePosts: SitePost[] }) {
   const tone = getCurationTone()
   const collections = bookmarkPosts.length ? bookmarkPosts.slice(0, 4) : articlePosts.slice(0, 4)
-  const people = profilePosts.slice(0, 3)
 
   return (
     <main className={tone.shell}>
@@ -576,9 +483,6 @@ function CurationHome({ primaryTask, bookmarkPosts, profilePosts, articlePosts }
               <Link href={primaryTask?.route || '/sbm'} className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold ${tone.action}`}>
                 Open collections
                 <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link href="/profile" className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold ${tone.actionAlt}`}>
-                Explore curators
               </Link>
             </div>
           </div>
@@ -599,17 +503,6 @@ function CurationHome({ primaryTask, bookmarkPosts, profilePosts, articlePosts }
             <p className="text-xs font-semibold uppercase tracking-[0.24em] opacity-70">Why this feels different</p>
             <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em]">More like saved boards and reading shelves than a generic post feed.</h2>
             <p className={`mt-4 max-w-2xl text-sm leading-8 ${tone.muted}`}>The structure is calmer, the cards are less noisy, and the page encourages collecting and returning instead of forcing everything into a fast-scrolling list.</p>
-          </div>
-          <div className="grid gap-4 md:grid-cols-3">
-            {people.map((post) => (
-              <Link key={post.id} href={`/profile/${post.slug}`} className={`rounded-[1.8rem] p-5 ${tone.soft}`}>
-                <div className="relative h-32 overflow-hidden rounded-[1.2rem]">
-                  <ContentImage src={getPostImage(post)} alt={post.title} fill className="object-cover" />
-                </div>
-                <h3 className="mt-4 text-lg font-semibold">{post.title}</h3>
-                <p className={`mt-2 text-sm leading-7 ${tone.muted}`}>Curator profile, saved resources, and collection notes.</p>
-              </Link>
-            ))}
           </div>
         </div>
       </section>
